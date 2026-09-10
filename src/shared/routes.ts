@@ -4,8 +4,8 @@ export const ROUTES = {
     SIGNUP: '/signup',
   },
   DASHBOARD: {
-    ROOT: '/',
-    DEVICES: '/devices',
-    GENERATION: '/generation',
+    ROOT: '/dashboard',
+    DEVICES: '/dashboard/devices',
+    GENERATION: '/dashboard/generation',
   },
 };

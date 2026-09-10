@@ -8,7 +8,7 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/api/auth-client';
 import { ROUTES } from '@/shared/routes';
 import { LoginFormData, loginSchema } from '@/types/auth.types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,14 +28,24 @@ export default function LoginForm() {
 
   async function onSubmit(data: LoginFormData) {
     try {
-      await authClient.signIn.username({
+      const result = await authClient.signIn.username({
         username: data.username,
         password: data.password,
       });
 
+      if (result.error) {
+        form.setError('root', {
+          message: 'Usuário ou senha inválidos.',
+        });
+
+        return;
+      }
+
       router.push(ROUTES.DASHBOARD.ROOT);
-    } catch (err) {
-      console.log('Login Error: ' + err);
+    } catch {
+      form.setError('root', {
+        message: 'Não foi possível realizar o login.',
+      });
     }
   }
 
@@ -69,7 +79,7 @@ export default function LoginForm() {
               <Input
                 {...field}
                 type="password"
-                id="form-login-username"
+                id="form-login-password"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -81,6 +91,12 @@ export default function LoginForm() {
             Login
           </Button>
         </Field>
+
+        {form.formState.errors.root && (
+          <p className="text-sm text-destructive-foreground">
+            {form.formState.errors.root.message}
+          </p>
+        )}
       </FieldGroup>
     </form>
   );

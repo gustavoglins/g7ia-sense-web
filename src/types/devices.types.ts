@@ -9,7 +9,7 @@ export const deviceSchema = z.object({
   sectorId: z.uuid(),
 
   name: z.string(),
-  devicesType: deviceTypeSchema,
+  deviceType: deviceTypeSchema,
   serialNumber: z.string().nullable(),
   version: z.string().nullable(),
   macAddress: z.string().nullable(),

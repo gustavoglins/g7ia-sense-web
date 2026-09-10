@@ -1,22 +1,29 @@
-import { NextRequest, NextResponse } from "next/server";
-import { ROUTES } from "./shared/routes";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const session = request.cookies.get('better-auth.session_token');
 
-  const protectedRoutes = ["/dashboard"];
+  const isLoggedIn = !!session;
 
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    const sessionCookie = request.cookies.get("better-auth.session_token");
+  const isProtectedRoute =
+    request.nextUrl.pathname.startsWith('/dashboard') ||
+    request.nextUrl.pathname.startsWith('/devices') ||
+    request.nextUrl.pathname.startsWith('/sectors') ||
+    request.nextUrl.pathname.startsWith('/installations');
 
-    if (!sessionCookie) {
-      return NextResponse.redirect(new URL(ROUTES.AUTH.LOGIN, request.url));
-    }
+  if (isProtectedRoute && !isLoggedIn) {
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: [
+    '/dashboard/:path*',
+    '/devices/:path*',
+    '/sectors/:path*',
+    '/installations/:path*',
+  ],
 };

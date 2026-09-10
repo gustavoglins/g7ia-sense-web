@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
-import { authClient } from '@/lib/auth-client';
+import { authClient } from '@/api/auth-client';
 import { cn } from '@/lib/utils';
 import { ROUTES } from '@/shared/routes';
 import {
@@ -28,9 +28,10 @@ import {
   Zap,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function DashboardSidebar() {
+  const router = useRouter();
   const pathname = usePathname();
 
   const navItems = [
@@ -51,8 +52,14 @@ export default function DashboardSidebar() {
     },
   ];
 
+  async function onSignOut() {
+    await authClient.signOut();
+    router.replace(ROUTES.AUTH.LOGIN);
+    router.refresh();
+  }
+
   return (
-    <aside className="max-w-72 w-full min-h-dvh border-r border-r-accent-muted pt-6 pb-0 flex flex-col justify-between">
+    <aside className="h-dvh w-full max-w-72 shrink-0 overflow-y-auto border-r border-r-accent-muted pt-6 pb-0 flex flex-col justify-between">
       <div className="flex flex-col gap-8">
         <div className="flex items-center justify-between px-6">
           <img
@@ -76,7 +83,7 @@ export default function DashboardSidebar() {
                     href={item.href}
                     aria-current={isActive ? 'page' : undefined}
                     className={cn(
-                      'flex items-center gap-4 rounded-xl border-2 border-transparent px-4 py-3 text-sm font-medium text-foreground transition-colors',
+                      'flex items-center gap-4 rounded-xl border-2 border-transparent px-4 py-3 text-sm font-medium text-foreground transition-all',
                       isActive &&
                         'border-primary-border bg-primary-surface text-primary shadow-[0_4px_18px_0px_var(--primary-border)]',
                     )}
@@ -118,7 +125,7 @@ export default function DashboardSidebar() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => authClient.signOut()}>
+              <DropdownMenuItem onClick={onSignOut}>
                 <div className="flex items-center gap-4">
                   <LogOut className="text-destructive-foreground  " />
                   <div className="flex flex-col gap-2">
