@@ -18,7 +18,12 @@ export function DeviceCard({ device }: { device: Device }) {
   return (
     <article className="min-w-0 p-4 rounded-xl border bg-card flex flex-col gap-4">
       <div className="flex items-start justify-between gap-3">
-        <Hexagon size={50} strokeWidth={1} aria-hidden="true" />
+        <Hexagon
+          size={50}
+          strokeWidth={1}
+          aria-hidden="true"
+          className="text-primary"
+        />
         <span
           className={`rounded-full size-2 ${isActive ? 'bg-primary' : 'bg-muted-foreground'}`}
         />
