@@ -65,7 +65,7 @@ export function DeviceCard({ device }: { device: Device }) {
         )}
       </div>
       {reading && (
-        <footer className="border-t pt-3 text-xs text-muted-foreground">
+        <footer className="text-xs text-muted-foreground">
           Registro gerado em{' '}
           <time dateTime={reading.time}>
             {formatTelemetryTime(reading.time)}

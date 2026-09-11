@@ -89,7 +89,8 @@
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
 
-  --destructive: #261412;
+  /* --destructive: #261412; */
+  --destructive: #e74c3c;
   --destructive-foreground: #e74c3c;
 
   --border: #252829;
