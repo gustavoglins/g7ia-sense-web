@@ -14,7 +14,6 @@ import {
 import DashboardCard from './_components/dashboard-card';
 import { Progress } from '@/components/ui/progress';
 import { StatusDot } from '@/components/ui/status-dot';
-import { TypographyP } from '@/components/typography/typography-p';
 import { TypographyH3 } from '@/components/typography/typography-h3';
 
 const generationData = [
@@ -52,9 +51,9 @@ export default function DashboardPage() {
       </div>
       <div className="flex flex-col gap-4">
         {/* First Row */}
-        <div className="flex items-stretch gap-4">
+        <div className="grid grid-cols-5 items-stretch gap-4">
           <DashboardCard
-            width="w-1/5"
+            width="col-span-1"
             icon={Zap}
             title="Potência Atual"
             info={{
@@ -66,7 +65,7 @@ export default function DashboardPage() {
             description="Hoje"
           />
           <DashboardCard
-            width="w-1/5"
+            width="col-span-1"
             icon={Sun}
             title="Energia Gerada"
             info={{
@@ -78,7 +77,7 @@ export default function DashboardPage() {
             description="Hoje"
           />
           <DashboardCard
-            width="w-1/5"
+            width="col-span-1"
             icon={Plug}
             title="Consumo de Energia"
             info={{
@@ -90,7 +89,7 @@ export default function DashboardPage() {
             description="Hoje"
           />
           <DashboardCard
-            width="w-1/5"
+            width="col-span-1"
             icon={Clock}
             title="Autonomia"
             info={{
@@ -114,7 +113,7 @@ export default function DashboardPage() {
             </div>
           </DashboardCard>
           <DashboardCard
-            width="w-1/5"
+            width="col-span-1"
             icon={Cpu}
             title="Estado do Sistema"
             info={{
@@ -139,9 +138,9 @@ export default function DashboardPage() {
         </div>
 
         {/* Second Row */}
-        <div className="flex items-stretch gap-4">
+        <div className="grid grid-cols-5 items-stretch gap-4">
           <DashboardCard
-            width="w-2/5"
+            width="col-span-2"
             icon={Sun}
             iconSize="default"
             title="Geração de Energia (kW)"
@@ -154,7 +153,7 @@ export default function DashboardPage() {
             }}
           />
           <DashboardCard
-            width="w-2/5"
+            width="col-span-2"
             icon={Plug}
             chartId="energy-consumption"
             chartData={consumptionData}
@@ -167,7 +166,7 @@ export default function DashboardPage() {
             }}
           />
           <DashboardCard
-            width="w-1/5"
+            width="col-span-1"
             icon={ArrowRight}
             iconSize="lg"
             title="Fluxo de Energia"
