@@ -65,11 +65,11 @@ export default function DashboardSidebar() {
     <aside className="h-dvh w-full max-w-72 shrink-0 overflow-y-auto border-r border-r-accent-muted pt-6 pb-0 flex flex-col justify-between">
       <div className="flex flex-col gap-8">
         <div className="flex items-center justify-between px-6">
-          <div className="relative isolate w-1/2 before:pointer-events-none before:absolute before:top-1/2 before:left-0 before:-z-10 before:h-16 before:w-20 before:-translate-y-1/2 before:rounded-full before:bg-primary/20 before:blur-xl">
+          <div className="relative isolate w-1/2 before:pointer-events-none before:absolute before:-top-[6.5rem] before:-left-[8rem] before:-z-10 before:h-52 before:w-64 before:rounded-full before:bg-primary/10 before:blur-3xl">
             <img
               src="https://ia-sense-dashboard.netlify.app/assets/logo-iasense.png"
               alt="G7i Energy logo"
-              className="w-full drop-shadow-[0_0_8px_var(--primary-border)]"
+              className="w-full drop-shadow-[-3px_-3px_10px_var(--primary-border)]"
             />
           </div>
           <PanelLeftClose className="text-muted-foreground" />
@@ -117,7 +117,7 @@ export default function DashboardSidebar() {
             disabled={isLoading}
             aria-busy={isLoading}
           >
-            <div className="flex min-w-0 items-center justify-between rounded-2xl p-2 transition-colors hover:bg-muted cursor-pointer">
+            <div className="flex min-w-0 items-center justify-between gap-4 rounded-2xl p-2 transition-colors hover:bg-popover cursor-pointer">
               <div className="flex min-w-0 flex-1 items-center gap-2">
                 {isLoading ? (
                   <>

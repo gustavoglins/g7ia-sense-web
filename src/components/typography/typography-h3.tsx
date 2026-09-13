@@ -9,7 +9,10 @@ type Props = {
 export function TypographyH3({ children, className }: Props) {
   return (
     <h3
-      className={cn('scroll-m-20 text-lg font-[400] tracking-tight', className)}
+      className={cn(
+        'scroll-m-20 text-2xl font-[400] tracking-tight',
+        className,
+      )}
     >
       {children}
     </h3>

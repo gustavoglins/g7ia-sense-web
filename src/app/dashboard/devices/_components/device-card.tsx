@@ -1,6 +1,7 @@
 import { TypographyP } from '@/components/typography/typography-p';
 import { TypographySmall } from '@/components/typography/typography-small';
 import { Separator } from '@/components/ui/separator';
+import { StatusDot } from '@/components/ui/status-dot';
 import {
   formatTelemetryTime,
   getDeviceMeasurements,
@@ -24,9 +25,7 @@ export function DeviceCard({ device }: { device: Device }) {
           aria-hidden="true"
           className="text-primary"
         />
-        <span
-          className={`rounded-full size-2 ${isActive ? 'bg-primary' : 'bg-muted-foreground'}`}
-        />
+        <StatusDot label="Status do dispositivo" />
       </div>
       <div className="break-words">
         <TypographyP medium>{device.name}</TypographyP>
