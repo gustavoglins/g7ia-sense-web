@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { InstallationSelect } from './installation-select';
 
 export default function DashboardSidebar() {
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function DashboardSidebar() {
           </div>
           <PanelLeftClose className="text-muted-foreground" />
         </div>
+        <InstallationSelect />
         <nav className="px-3">
           <ul className="flex flex-col gap-2">
             {navItems.map((item) => {

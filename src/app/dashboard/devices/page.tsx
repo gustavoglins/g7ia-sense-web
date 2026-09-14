@@ -6,7 +6,7 @@ import { TypographyH3 } from '@/components/typography/typography-h3';
 import { TypographySmall } from '@/components/typography/typography-small';
 import { Button } from '@/components/ui/button';
 import { useDevices } from '@/hooks/useDevices';
-import { useInstallations } from '@/hooks/useInstallations';
+import { useInstallation } from '@/components/providers/installation-provider';
 import { useSectors } from '@/hooks/useSectors';
 import { deviceTypeSchema, type Device } from '@/types/devices.types';
 import { ChevronLeft, ChevronRight, RefreshCcw } from 'lucide-react';
@@ -15,8 +15,22 @@ import { DeviceFilter } from './_components/device-filter';
 import { DevicesSkeleton } from './_components/devices-skeleton';
 
 export default function DashboardDevicesPage() {
+  const { installationId, installations } = useInstallation();
+  if (!installationId) {
+    return (
+      <p role="status" className="text-sm text-muted-foreground">
+        {installations.isPending
+          ? 'Carregando instalações...'
+          : 'Selecione uma instalação na sidebar para consultar os dispositivos.'}
+      </p>
+    );
+  }
+  return <InstallationDevices key={installationId} />;
+}
+
+function InstallationDevices() {
+  const { installationId } = useInstallation();
   const [filters, setFilters] = useState({
-    installationId: '',
     sectorId: '',
     page: 1,
     limit: 50,
@@ -24,13 +38,11 @@ export default function DashboardDevicesPage() {
   const [selectedType, setSelectedType] = useState('all');
   const { data, isLoading, error, isFetching, refetch, dataUpdatedAt } =
     useDevices({
-      installationId: filters.installationId || undefined,
       sectorId: filters.sectorId || undefined,
       page: filters.page,
       limit: filters.limit,
     });
-  const installations = useInstallations();
-  const sectors = useSectors(filters.installationId);
+  const sectors = useSectors();
   const groups = new Map<string, Device[]>();
 
   for (const device of data?.data ?? []) {
@@ -47,13 +59,12 @@ export default function DashboardDevicesPage() {
   );
   const pagination = data?.pagination;
   const hasFilters = Boolean(
-    filters.installationId || filters.sectorId || selectedType !== 'all',
+    filters.sectorId || selectedType !== 'all',
   );
 
   function clearFilters() {
     setFilters((current) => ({
       ...current,
-      installationId: '',
       sectorId: '',
       page: 1,
     }));
@@ -72,42 +83,16 @@ export default function DashboardDevicesPage() {
       </div>
 
       <div className="flex flex-col gap-3">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <DeviceFilter
-            id="device-installation"
-            label="Instalação"
-            value={filters.installationId || 'all'}
-            disabled={installations.isLoading}
-            options={[
-              {
-                value: 'all',
-                label: installations.isLoading
-                  ? 'Carregando instalações...'
-                  : 'Todas as instalações',
-              },
-              ...(installations.data ?? []).map((installation) => ({
-                value: installation.id,
-                label: installation.name,
-              })),
-            ]}
-            onChange={(value) =>
-              setFilters((current) => ({
-                ...current,
-                installationId: value === 'all' ? '' : value,
-                sectorId: '',
-                page: 1,
-              }))
-            }
-          />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           <DeviceFilter
             id="device-sector"
             label="Setor"
             value={filters.sectorId || 'all'}
-            disabled={!filters.installationId || sectors.isLoading}
+            disabled={!installationId || sectors.isLoading}
             options={[
               {
                 value: 'all',
-                label: !filters.installationId
+                label: !installationId
                   ? 'Selecione uma instalação'
                   : sectors.isLoading
                     ? 'Carregando setores...'
@@ -156,23 +141,7 @@ export default function DashboardDevicesPage() {
             }
           />
         </div>
-        {installations.error && (
-          <div
-            role="alert"
-            className="flex flex-wrap items-center gap-2 text-sm text-destructive"
-          >
-            Não foi possível carregar as instalações.
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={installations.isFetching}
-              onClick={() => void installations.refetch()}
-            >
-              Tentar novamente
-            </Button>
-          </div>
-        )}
-        {filters.installationId && sectors.error && (
+        {installationId && sectors.error && (
           <div
             role="alert"
             className="flex flex-wrap items-center gap-2 text-sm text-destructive"
@@ -188,7 +157,7 @@ export default function DashboardDevicesPage() {
             </Button>
           </div>
         )}
-        {filters.installationId &&
+        {installationId &&
           sectors.isSuccess &&
           sectors.data.length === 0 && (
             <p className="text-sm text-muted-foreground">
